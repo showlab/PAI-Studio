@@ -1,7 +1,9 @@
 # PAI-Studio: Cinematic Video Background Replacement with Camera-Aware Motion
 
+[![arXiv](https://img.shields.io/badge/arXiv-2606.01399-b31b1b.svg)](https://arxiv.org/abs/2606.01399)
 [![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://gaohy63601-droid.github.io/promising/)
 
+📄 **Paper:** https://arxiv.org/abs/2606.01399
 🔗 **Project page:** https://gaohy63601-droid.github.io/promising/
 
 ## Authors

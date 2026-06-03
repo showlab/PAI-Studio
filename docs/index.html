@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PAI-Studio: Cinematic Video Background Replacement with Camera-Aware Motion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;700&display=swap');
+        body { font-family: "Google Sans", "Open Sans", sans-serif; font-weight: 300; background-color: #fff; margin: 0; padding: 0; }
+        .content { width: 1000px; padding: 25px 50px; margin: 25px auto; background-color: white; box-shadow: 0px 0px 10px #999; border-radius: 15px; }
+        h1 { text-align: center; font-size: 35px; font-weight: 300; }
+        h2 { font-size: 30px; font-weight: 300; text-align: center; }
+        h3 { font-size: 22px; font-weight: 400; text-align: center; color: #444; }
+        p { line-height: 25px; text-align: justify; }
+        a, a:visited { color: #224b8d; font-weight: 300; }
+        #authors { text-align: center; margin-bottom: 20px; font-size: 20px; }
+        #authors a { margin: 0 10px; }
+        .summary-img { display: block; margin-left: auto; margin-right: auto; }
+        .btn-row { text-align: center; margin-top: 20px; }
+        .btn-row a {
+            display: inline-flex; align-items: center; vertical-align: middle;
+            padding: 6px 18px; margin: 5px; background: #333; color: white;
+            border-radius: 20px; text-decoration: none; font-size: 15px;
+        }
+        .btn-row a:hover { background: #555; color: white; }
+        .btn-row a i { margin-right: 6px; font-size: 18px; }
+        .btn-row a.disabled { background: #888; cursor: not-allowed; pointer-events: none; opacity: 0.7; }
+        video { width: 100%; border-radius: 8px; }
+        table.results { width: 100%; border-collapse: collapse; font-size: 14px; margin: 15px 0; }
+        table.results th { background: #e6e6e6; padding: 8px; text-align: center; }
+        table.results td { padding: 6px 8px; text-align: center; border-bottom: 1px solid #eee; }
+        table.results tr.ours { background: #d0e8ff; font-weight: 700; }
+        .feature-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 15px 0; }
+        .feature-table th { background: #e6e6e6; padding: 8px; text-align: center; font-size: 13px; }
+        .feature-table td { padding: 6px 8px; text-align: center; border-bottom: 1px solid #eee; }
+        .feature-table tr.ours { background: #d0e8ff; font-weight: 700; }
+        .check { color: #2e7d32; }
+        .cross { color: #c62828; }
+        .bibtex-box { background: #f5f5f5; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 13px; overflow-x: auto; white-space: pre; }
+        .section-gap { margin-top: 10px; }
+        @media (max-width: 1100px) { .content { width: 90%; padding: 20px; } }
+    </style>
+</head>
+<body>
+
+<div class="content">
+    <h1><strong>PAI-Studio: Cinematic Video Background Replacement with Camera-Aware Motion</strong></h1>
+
+    <p id="authors">
+        <a href="#">Heyuan Gao<sup>1,2,*</sup></a>
+        <a href="#">Bangxun Tang<sup>1,3,*</sup></a>
+        <a href="#">Yiren Song<sup>1,4,*,&Dagger;</sup></a>
+        <a href="#">Guian Fang<sup>1,4</sup></a>
+        <a href="#">Zijian He<sup>1</sup></a>
+        <a href="#">Jie Yang<sup>1</sup></a>
+        <a href="https://sites.google.com/view/showlab">Mike Zheng Shou<sup>4,&dagger;</sup></a>
+        <br><br>
+        <span style="font-size:18px;">
+            <sup>1</sup>Utopai Studios&emsp;
+            <sup>2</sup>Nanyang Technological University&emsp;
+            <sup>3</sup>University of California, Irvine&emsp;
+            <sup>4</sup>Show Lab, National University of Singapore
+        </span>
+        <br><br>
+        <span style="font-size:14px; color:#666;">
+            <sup>*</sup>Equal contribution&emsp;<sup>&Dagger;</sup>Project leader&emsp;<sup>&dagger;</sup>Corresponding author
+        </span>
+    </p>
+
+    <div class="btn-row">
+        <a href="#" target="_blank"><i class="ai ai-arxiv"></i> Paper</a>
+        <a class="disabled"><i class="fa-brands fa-github"></i> Code (Coming Soon)</a>
+    </div>
+
+    <div style="margin-top: 25px;">
+        <video autoplay loop muted playsinline>
+            <source src="static/teaser.mp4" type="video/mp4">
+        </video>
+        <p style="text-align: center; font-size: 14px; color: #666; margin-top: 8px;">
+            Given a foreground video and background reference images, our method synthesizes a complete video with camera-aware background motion, foreground consistency, and scene-consistent relighting at 1080P resolution.
+        </p>
+    </div>
+</div>
+
+<div class="content">
+    <h2>Abstract</h2>
+    <p>
+        We present PAI-Studio, a new reference-conditioned video synthesis task that addresses a long-standing challenge in cinematic background replacement: generating dynamic backgrounds aligned with foreground motion while preserving foreground identity, matching reference scene appearance, and achieving globally consistent illumination with realistic foreground relighting. Existing open-source systems and commercial APIs cannot simultaneously ensure motion-consistent background generation, high-fidelity foreground relighting and foreground identity preservation, often resulting in static backgrounds, inconsistent boundaries, and noticeable compositing artifacts. To bridge this gap, we build upon a Diffusion Transformer video backbone and reformulate the problem as an in-context conditional generation task. Through bidirectional attention, our model jointly captures foreground dynamics and background reference information within a unified architecture. We further construct a 30K-scale dataset sourced from high-quality films and online videos to support this task. Extensive evaluations demonstrate that our method significantly outperforms existing open-source and commercial API solutions.
+    </p>
+</div>
+
+<!-- <div class="content">
+    <h2>Feature Comparison</h2>
+    <table class="feature-table">
+        <tr>
+            <th>Method</th><th>1080P</th><th>Multi-frame<br>BG Control</th><th>Moving<br>Background</th><th>Foreground<br>Consistency</th><th>Illumination<br>Harmony</th><th>Edge<br>Harmony</th><th>Background<br>Consistency</th>
+        </tr>
+        <tr><td>VACE*</td><td class="check">&#10003;</td><td class="cross">&#10007;</td><td class="check">&#10003;</td><td class="cross">&#10007;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="cross">&#10007;</td></tr>
+        <tr><td>Kling O1</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="cross">&#10007;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+        <tr><td>Runway Gen-4 Aleph</td><td class="check">&#10003;</td><td class="cross">&#10007;</td><td class="cross">&#10007;</td><td class="cross">&#10007;</td><td class="cross">&#10007;</td><td class="cross">&#10007;</td><td class="cross">&#10007;</td></tr>
+        <tr><td>Kling 3.0 Omni</td><td class="cross">&#10007;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="cross">&#10007;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="cross">&#10007;</td></tr>
+        <tr><td>Beeble AI SwitchX</td><td class="check">&#10003;</td><td class="cross">&#10007;</td><td class="cross">&#10007;</td><td class="check">&#10003;</td><td class="cross">&#10007;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+        <tr class="ours"><td><strong>Ours</strong></td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+    </table>
+</div> -->
+
+<div class="content">
+    <h2>Method</h2>
+    <img class="summary-img" src="static/method_fig.png" style="width:100%" alt="Method overview">
+    <p style="text-align: center; font-size: 14px; color: #666; margin-top: 8px;">
+        Overview of the PAI-Studio architecture. Multi-condition inputs&mdash;including multiple background reference images, the illumination-perturbed foreground video, a structured prompt JSON, and the denoising video&mdash;are encoded into tokens and concatenated. A multi-modal attention model leverages bidirectional attention to model their global correlations. In addition, Temporal Positional Encoding (PE) Cloning is introduced to precisely control the temporal placement of multiple background images in the generated video.
+    </p>
+</div>
+
+<div class="content">
+    <h2>Dataset: CineStudio</h2>
+    <img class="summary-img" src="static/data_pipeline_fig.png" style="width:100%" alt="Data pipeline">
+    <p style="text-align: center; font-size: 14px; color: #666; margin-top: 8px;">
+        Overview of the CineStudio data construction pipeline.
+    </p>
+</div>
+
+<div class="content">
+    <h2>Generation Results</h2>
+    <video autoplay loop muted playsinline>
+        <source src="static/demo.mp4" type="video/mp4">
+    </video>
+</div>
+
+<!-- <div class="content">
+    <h2>Comparison Results</h2>
+</div>
+
+<div class="content">
+    <h2>Ablation Study</h2>
+</div> -->
+
+<div class="content">
+    <h2>Visual Results of Excluded Open-Source IV2V Baselines</h2>
+    <img src="static/excluded_baselines.gif" style="width:100%" alt="Excluded baselines comparison">
+    <p style="text-align: center; font-size: 14px; color: #666; margin-top: 8px;">
+        <strong>Visual results of excluded open-source IV2V baselines.</strong> When tasked with green-screen background replacement given a reference background (Column 1) and an input foreground video (Column 2), existing models completely fail to synthesize a coherent video. They suffer from severe hallucination, identity loss, semantic misinterpretation of the green screen, or complete conditioning collapse into noise.
+    </p>
+</div>
+
+<div class="content">
+    <h2>Edge Harmonization</h2>
+    <img class="summary-img" src="static/edge_final.png" style="width:100%" alt="Edge harmonization">
+    <p style="text-align: center; font-size: 14px; color: #666; margin-top: 8px;">
+        <strong>Superior edge harmonization.</strong> Compared to baselines that suffer from severe green spill and boundary artifacts (highlighted by red boxes), our model generates clean, natural edges without residual green contamination.
+    </p>
+</div>
+
+<div class="content">
+    <h2>Robustness to Imperfect Segmentation</h2>
+    <img class="summary-img" src="static/segmentation.jpg" style="width:100%" alt="Segmentation robustness">
+    <p style="text-align: center; font-size: 14px; color: #666; margin-top: 8px;">
+        <strong>Robustness to imperfect foreground segmentation.</strong> We highlight four challenging cases where the input green-screen videos (top rows) contain mask defects, <strong>as indicated by the red bounding boxes</strong>. These include severely corrupted body parts, arbitrary holes, and artificial occlusions. Without any explicit inpainting prompts, our model (bottom rows) robustly reconstructs the missing foreground structures while seamlessly compositing them into the generated backgrounds with global illumination and structural harmony.
+    </p>
+</div>
+
+<div class="content">
+    <h2>Implicit Scene-Adaptive Relighting</h2>
+    <img class="summary-img" src="static/relighting.jpg" style="width:90%" alt="Relighting results">
+    <p style="text-align: center; font-size: 14px; color: #666; margin-top: 8px;">
+        <strong>Implicit scene-adaptive relighting.</strong> Our model automatically harmonizes the foreground illumination with the newly synthesized backgrounds without requiring any explicit relighting prompts or maps.
+    </p>
+</div>
+
+<div class="content">
+    <h2>Multi-Frame Background Control</h2>
+    <img class="summary-img" src="static/multi_frame.jpg" style="width:100%" alt="Multi-frame control">
+    <p style="text-align: center; font-size: 14px; color: #666; margin-top: 8px;">
+        <strong>Effect of multi-frame background control.</strong> Comparing inference results conditioned on 1, 2, and 3 background reference images. The 3-reference control effectively anchors the background at the beginning, middle, and end temporal locations, yielding the most temporally coherent results that closely match the ground truth (GT). Fewer reference frames lead to information deficits at unconditioned time steps, causing structural deviations and abrupt disappearance or morphing of background objects.
+    </p>
+</div>
+
+
+</body>
+</html>

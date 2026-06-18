@@ -1,5 +1,8 @@
 # PAI-Studio: Cinematic Video Background Replacement with Camera-Aware Motion
 
+### ECCV 2026
+
+[![ECCV 2026](https://img.shields.io/badge/ECCV-2026-1f6feb.svg)](https://gaohy63601-droid.github.io/promising/)
 [![arXiv](https://img.shields.io/badge/arXiv-2606.01399-b31b1b.svg)](https://arxiv.org/abs/2606.01399)
 [![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://gaohy63601-droid.github.io/promising/)
 
